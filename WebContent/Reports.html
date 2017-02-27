@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>ReservationSystem</title>
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+</head>
+
+
+<body>
+	<div id="container1" align="center">
+		<h1 style="text-align: center;">
+			<b>Welcome to the Reservation Service API Server</b>
+		</h1>
+		<br>
+		<h3 style="text-align: center;">
+			<b>Orders Report</b>
+		</h3>
+		<a href="landing.html">Home</a>
+		<hr />
+	</div>
+	<div id="container2" align="center">
+
+		<br> <input id="emailId" type="text" name="Email ID"
+			value="Email ID"><br> <br> <input type="submit"
+			value="Submit" align="center" id="submitButton"> <br> <br>
+	</div>
+	<div id="container3" align="center">
+		<table id="records_table" align="center" border='1'>
+			<tr>
+				<th align="center" width="100">Name</th>
+				<th align="center" width="100">Email ID</th>
+				<th align="center" width="100">Show Name</th>
+				<th align="center" width="50">Date</th>
+				<th align="center" width="50">Time</th>
+				<th align="center" width="50">Screen</th>
+				<th align="center" width="50">Booked Tickets</th>
+				<th align="center" width="100">Seats</th>
+			</tr>
+		</table>
+	</div>
+	<script>
+		$(document)
+				.ready(
+						function() {
+							$("#submitButton")
+									.click(
+											function() {
+
+												var emailId = document
+														.getElementById("emailId").value;
+												var service = 'http://localhost:8080/reservation-service/service';
+												$
+														.ajax({
+															type : "GET",
+															url : service
+																	+ '/orders?emailId='
+																	+ emailId,
+															dataType : "json",
+															success : function(
+																	response) {
+																$('#records_table tr:gt(0)').remove()
+																var trHTML = '';
+																$
+																		.each(
+																				response,
+																				function(
+																						key,
+																						value) {
+																					for (x in value) {
+																						trHTML += '<tr><td>'
+																								+ value[x].fullName
+																								+ '</td><td>'
+																								+ value[x].emailId
+																								+ '</td><td>'
+																								+ value[x].showName
+																								+ '</td><td>'
+																								+ value[x].date
+																								+ '</td><td>'
+																								+ value[x].time
+																								+ '</td><td>'
+																								+ value[x].screenName
+																								+ '</td><td>'
+																								+ value[x].numberOfSeatsBooked
+																								+ '</td><td>'
+																								+ value[x].seatNumbers
+																								+ '</td></tr>';
+																					}
+																				});
+
+																$(
+																		'#records_table')
+																		.append(
+																				trHTML);
+															}
+														});
+											})
+						});
+	</script>
+
+</body>
+</html>
